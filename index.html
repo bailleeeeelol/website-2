@@ -1,189 +1,1208 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
-<meta charset="UTF-8" />
+
+<meta charset="utf-8" />
+
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>EVEX Shop</title>
+
+<title>MoonWare.cc</title>
+
+<meta name="description" content="A polished, responsive, single-file demo storefront with a professional animated cart, toasts, loading screen, media embeds, and mobile-first UX." />
+
 <style>
-:root{
-  --bg:#0b0b10; --panel:#17172a; --ink:#eaf2ff;
-  --brand:#8b5cf6; --brand-2:#06b6d4; --accent:#22c55e;
-  --shadow:0 10px 30px rgba(0,0,0,.35); --radius:16px; --speed:260ms;
-}
-*{box-sizing:border-box}
-body,html{margin:0;padding:0;height:100%;font-family:sans-serif;background:var(--bg);color:var(--ink);overflow-x:hidden}
 
-/* Loader */
-.loader{position:fixed;inset:0;display:grid;place-items:center;background:rgba(10,10,18,.9);z-index:9999;transition:opacity var(--speed) ease,visibility var(--speed) ease;flex-direction:column;text-align:center;opacity:1;}
-.loader.hidden{opacity:0;visibility:hidden}
-.spinner{width:84px;height:84px;border-radius:50%;border:6px solid rgba(139,92,246,.25);border-top-color:var(--brand);animation:spin .9s linear infinite}
-@keyframes spin{to{transform:rotate(360deg)}}
-.loader-text{margin-top:12px;font-size:18px;color:var(--brand);}
+  :root{
 
-/* Header */
-header{padding:14px 20px;display:flex;align-items:center;gap:10px;background:linear-gradient(180deg, rgba(12,12,22,.85), rgba(12,12,22,.55));position:sticky;top:0;z-index:50;border-bottom:1px solid rgba(139,92,246,.16);}
-.home-btn img{height:32px;width:auto;}
-.brand{font-weight:800;letter-spacing:.3px;margin-left:10px;font-size:18px;background:linear-gradient(90deg,var(--brand),var(--brand-2)); -webkit-background-clip:text;color:transparent;}
+    /* Vibrant brand palette */
 
-/* Sections */
-section{display:none; padding:20px; max-width:1200px;margin:0 auto;}
-section.active{display:block;}
+    --bg: #0b0b12;
 
-/* Panels */
-.panel{background:linear-gradient(180deg, rgba(23,23,45,.85), rgba(18,18,32,.85)); border:1px solid rgba(139,92,246,.2); border-radius:var(--radius); box-shadow:var(--shadow); padding:22px; opacity:0; transition:opacity .8s ease;}
+    --panel: #121224;
 
-/* Hero */
-.hero{aspect-ratio:16/9; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:16px; text-align:center;}
-.hero h1{font-size:clamp(26px,4vw,44px); margin:0;}
-.hero .btn{padding:12px 20px;background:linear-gradient(90deg,var(--brand),var(--brand-2));border:none;border-radius:12px;color:#06090f;font-weight:700;cursor:pointer;transition:transform .25s;}
-.hero .btn:hover{transform:translateY(-2px);}
+    --panel-2: #181832;
 
-/* Description */
-.description{display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-bottom:20px;}
-.description .panel{opacity:0;}
+    --ink: #f2f3f8;
 
-/* Media */
-.media{display:none; grid-template-columns:2fr 1fr; gap:18px; margin-bottom:24px; opacity:0;}
+    --muted: #bfc3d9;
 
-/* Products page */
-.products-page{aspect-ratio:16/9; display:flex; flex-direction:column; gap:12px;}
-.products-page h1{margin:0;font-size:clamp(26px,4vw,44px);}
-.products-page h2{margin:0;font-size:20px;color:var(--brand-2);}
-.product-grid{display:flex; gap:12px; margin-top:12px;}
-.product-card{flex:1; border-radius:16px; overflow:hidden; background:linear-gradient(180deg, rgba(23,23,45,.85), rgba(18,18,32,.85)); display:grid; place-items:center; position:relative; aspect-ratio:16/9; opacity:0; transition:opacity .8s ease;}
-.product-card img{width:100%;height:100%;object-fit:cover;}
+    --primary: #7b5cff; /* neon purple */
+
+    --primary-2:#18e0ff; /* electric cyan */
+
+    --accent: #ff5cc8;   /* hot pink */
+
+    --good: #35e6a9;
+
+    --warn: #ffd166;
+
+    --bad: #ff6363;
+
+ 
+
+    --radius: 14px;
+
+    --radius-sm: 10px;
+
+    --shadow-1: 0 10px 30px rgba(0,0,0,.35);
+
+    --shadow-2: 0 20px 50px rgba(0,0,0,.45);
+
+    --blur: saturate(140%) blur(10px);
+
+    --ring: 0 0 0 2px rgba(123,92,255,.35), 0 10px 25px rgba(123,92,255,.25);
+
+ 
+
+    --touch-min: 44px;
+
+  }
+
+ 
+
+  /* Global reset + typography */
+
+  * { box-sizing: border-box; }
+
+  html, body { height: 100%; background: radial-gradient(1200px 800px at 20% -10%, rgba(123,92,255,.18) 0%, transparent 55%), radial-gradient(900px 600px at 120% 10%, rgba(24,224,255,.15) 0%, transparent 50%), var(--bg); }
+
+  body { 0; font: 16px/1.45 system-ui, -apple-system, Segoe UI, Roboto, Inter, Arial, sans-serif; color: var(--ink); }
+
+  a { color: inherit; text-decoration: none; }
+
+  img { max-width:100%; display:block; }
+
+  button { font: inherit; }
+
+ 
+
+  /* Loading screen */
+
+  #loader {
+
+    position: fixed; inset:0; display:flex; align-items:center; justify-content:center;
+
+    background: linear-gradient(180deg, #0b0b12 0%, #0f0f1d 100%);
+
+    z-index: 9999; transition: opacity .45s ease, visibility .45s ease;
+
+  }
+
+  #loader.hidden { opacity:0; visibility:hidden; }
+
+  .spinner {
+
+    width:76px; height:76px; border-radius:50%;
+
+    background:
+
+      conic-gradient(from 0turn, var(--primary), var(--primary-2), var(--accent), var(--primary));
+
+    -webkit-mask: radial-gradient(closest-side, transparent calc(50% - 10px), #000 calc(50% - 9px));
+
+            mask: radial-gradient(closest-side, transparent calc(50% - 10px), #000 calc(50% - 9px));
+
+    animation: spin 1.1s linear infinite;
+
+    box-shadow: 0 0 0 10px rgba(255,255,255,.02), inset 0 0 30px rgba(0,0,0,.4);
+
+  }
+
+  @keyframes spin { to { transform: rotate(1turn); } }
+
+ 
+
+  /* Header */
+
+  .header {
+
+    position: sticky; top:0; z-index: 40;
+
+    backdrop-filter: blur(10px);
+
+    background: linear-gradient(180deg, rgba(18,18,36,.9), rgba(18,18,36,.65));
+
+    border-bottom: 1px solid rgba(255,255,255,.06);
+
+  }
+
+  .header-inner {
+
+    max-width: 1200px; 0 auto; padding: .75rem 1rem; display: grid;
+
+    grid-template-columns: auto 1fr auto; gap: 10px; align-items: center;
+
+  }
+
+  .brand {
+
+    display:flex; gap:.6rem; align-items:center; min-height: var(--touch-min);
+
+  }
+
+  .home-btn {
+
+    width:42px; height:42px; border-radius: 12px; display:grid; place-items:center; cursor:pointer;
+
+    border: 1px solid rgba(255,255,255,.08);
+
+    background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.02));
+
+    box-shadow: var(--shadow-1);
+
+    transition: transform .15s ease, box-shadow .2s ease;
+
+  }
+
+  .home-btn:focus, .home-btn:hover { outline: none; box-shadow: var(--ring); transform: translateY(-1px); }
+
+  .home-icon { width:22px; height:22px; display:block; }
+
+  .title {
+
+    font-weight: 800; letter-spacing:.2px; font-size: clamp(1.05rem, 2vw, 1.25rem);
+
+    color: #fff;
+
+  }
+
+  .header-actions { display: flex; gap: .6rem; align-items:center; }
+
+  .cart-btn {
+
+    position: relative; min-height: var(--touch-min); min-width: var(--touch-min);
+
+    border-radius: 14px; border: 1px solid rgba(255,255,255,.1);
+
+    background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+
+    display:grid; place-items:center; cursor:pointer; padding:.25rem .75rem; gap:.55rem; grid-auto-flow: column;
+
+    transition: transform .15s ease, box-shadow .2s ease;
+
+  }
+
+  .cart-btn:hover, .cart-btn:focus { box-shadow: var(--ring); transform: translateY(-1px); outline:none; }
+
+  .cart-icon { width:22px; height:22px; }
+
+  .badge {
+
+    position:absolute; top:-6px; right:-6px; min-width: 20px; height: 20px; border-radius: 999px;
+
+    background: linear-gradient(180deg, var(--accent), #ff2a9c);
+
+    color: #fff; font-weight: 800; font-size: 12px; display:grid; place-items:center; padding:0 6px;
+
+    box-shadow: 0 6px 16px rgba(255,92,200,.45);
+
+  }
+
+ 
+
+  /* Hero / Description */
+
+  .hero {
+
+    max-width: 1200px; 1.2rem auto 0; padding: 0 1rem 1.2rem;
+
+    display:grid; gap: 14px;
+
+  }
+
+  .hero-panels {
+
+    display:grid; grid-template-columns: 1.1fr .9fr; gap: 14px;
+
+  }
+
+  .panel {
+
+    background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+
+    border: 1px solid rgba(255,255,255,.08);
+
+    border-radius: var(--radius); padding: 18px; box-shadow: var(--shadow-1);
+
+  }
+
+  .panel h2 { .25rem 0 .6rem; font-size: clamp(1.15rem, 2.4vw, 1.5rem); }
+
+  .panel p { color: var(--muted); .35rem 0; }
+
+  .bullets { .6rem 0 0; padding-left: 1rem; color: var(--muted); }
+
+  .bullets li { .25rem 0; }
+
+ 
+
+  /* Media embeds */
+
+  .media-grid {
+
+    display:grid; grid-template-columns: 1fr 1fr; gap: 10px; .6rem;
+
+  }
+
+  .media {
+
+    border-radius: 12px; overflow:hidden; border:1px solid rgba(255,255,255,.08);
+
+    aspect-ratio: 16/9; background: #0c0c18;
+
+  }
+
+  .media > iframe, .media > video { width:100%; height:100%; border:0; display:block; }
+
+ 
+
+  /* Products */
+
+  .section-heading {
+
+    max-width: 1200px; 1rem auto 0; padding: 0 1rem;
+
+    font-weight: 800; letter-spacing:.2px; display:flex; align-items:center; gap:.6rem;
+
+  }
+
+  .products {
+
+    max-width: 1200px; .6rem auto 2rem; padding: 0 1rem;
+
+    display:grid; grid-template-columns: repeat(5, minmax(0,1fr)); gap: 14px;
+
+  }
+
+  .card {
+
+    border-radius: var(--radius); overflow: clip; border:1px solid rgba(255,255,255,.08);
+
+    background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.025));
+
+    box-shadow: var(--shadow-1); display:flex; flex-direction: column; min-height: 100%;
+
+    transition: transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+
+  }
+
+  .card:hover { transform: translateY(-3px); box-shadow: var(--shadow-2); border-color: rgba(123,92,255,.45); }
+
+  .card .img {
+
+    aspect-ratio: 4/3; display:grid; place-items:center; background:
+
+      radial-gradient(120% 90% at 50% 0%, rgba(123,92,255,.22), transparent 50%),
+
+      linear-gradient(135deg, rgba(24,224,255,.15), rgba(255,92,200,.15));
+
+    border-bottom: 1px solid rgba(255,255,255,.06);
+
+  }
+
+  .card .img svg { width: 60%; height: auto; opacity:.9; }
+
+  .card .body { padding: 12px 14px; display:flex; gap:8px; flex-direction: column; flex:1; }
+
+  .card h3 { 0; font-size: 1rem; }
+
+  .price { font-weight: 800; letter-spacing:.3px; }
+
+  .desc { color: var(--muted); font-size: .92rem; }
+
+  .actions { display:flex; gap:8px; auto; }
+
+  .btn {
+
+    flex:1; min-height: 40px; border-radius: 12px; border: 1px solid rgba(255,255,255,.1);
+
+    background: linear-gradient(180deg, rgba(123,92,255,.95), rgba(123,92,255,.7));
+
+    color:#fff; font-weight: 800; cursor:pointer;
+
+    transition: transform .12s ease, box-shadow .2s ease, filter .2s ease;
+
+  }
+
+  .btn:hover, .btn:focus { transform: translateY(-1px); box-shadow: var(--ring); outline:none; }
+
+  .btn.secondary {
+
+    background: linear-gradient(180deg, rgba(24,224,255,.95), rgba(24,224,255,.7)); color:#041014;
+
+  }
+
+ 
+
+  /* Cart Drawer */
+
+  .drawer {
+
+    position: fixed; inset: 0 0 0 auto; width: min(420px, 94vw);
+
+    background: linear-gradient(180deg, rgba(24,24,48,.98), rgba(16,16,32,.98));
+
+    border-left: 1px solid rgba(255,255,255,.08);
+
+    transform: translateX(105%); transition: transform .35s cubic-bezier(.2,.8,.2,1);
+
+    z-index: 60; display:flex; flex-direction: column; box-shadow: var(--shadow-2);
+
+  }
+
+  .drawer.open { transform: translateX(0); }
+
+  .drawer header { padding: 16px; display:flex; align-items:center; justify-content: space-between; border-bottom: 1px solid rgba(255,255,255,.08); }
+
+  .drawer header h3 { 0; }
+
+  .drawer .list { padding: 10px 16px; overflow:auto; flex:1; display:flex; flex-direction: column; gap:10px; }
+
+  .line {
+
+    display:grid; grid-template-columns: 64px 1fr auto; gap:12px;
+
+    background: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02)); border:1px solid rgba(255,255,255,.08);
+
+    border-radius: 12px; padding: 10px;
+
+  }
+
+  .thumb { width:64px; height:64px; border-radius: 10px; overflow:hidden; background: #0e0e1a; border:1px solid rgba(255,255,255,.08); }
+
+  .meta { display:flex; flex-direction:column; gap:6px; }
+
+  .qty {
+
+    display:inline-grid; grid-auto-flow: column; gap:6px; align-items:center;
+
+    justify-content:flex-end;
+
+  }
+
+  .qty button {
+
+    width:32px; height:32px; border-radius: 8px; border: 1px solid rgba(255,255,255,.12);
+
+    background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+
+    cursor:pointer; font-weight: 900;
+
+  }
+
+  .totals { padding: 16px; border-top: 1px solid rgba(255,255,255,.08); display:grid; gap:10px; }
+
+  .checkout {
+
+    min-height: var(--touch-min); border-radius: 14px; border: 0;
+
+    background: linear-gradient(180deg, var(--accent), #ff2a9c); color:#160413; font-weight:900; cursor:pointer;
+
+    box-shadow: 0 12px 30px rgba(255,92,200,.35);
+
+  }
+
+  .empty { color: var(--muted); text-align:center; padding: 14px; }
+
+ 
+
+  /* Toasts (notifications) */
+
+  .toasts { position: fixed; inset: auto 0 0 auto; display:flex; flex-direction: column; gap:10px; padding: 14px; z-index: 80; }
+
+  .toast {
+
+    min-width: 240px; max-width: 340px; border-radius: 12px; padding: 12px 14px; font-weight: 700;
+
+    border:1px solid rgba(255,255,255,.12);
+
+    background: linear-gradient(180deg, rgba(27,27,56,.98), rgba(18,18,36,.98));
+
+    box-shadow: var(--shadow-2); transform: translateY(10px); opacity:0;
+
+    animation: toast-in .35s ease forwards, toast-out .25s ease 3.2s forwards;
+
+  }
+
+  .toast.good { border-color: rgba(53,230,169,.45); }
+
+  .toast.warn { border-color: rgba(255,209,102,.45); }
+
+  @keyframes toast-in { to { transform: translateY(0); opacity:1; } }
+
+  @keyframes toast-out { to { transform: translateY(6px); opacity:0; } }
+
+ 
+
+  /* Footer */
+
+  footer { color: var(--muted); text-align:center; padding: 40px 16px; border-top:1px solid rgba(255,255,255,.06); background: linear-gradient(180deg, rgba(255,255,255,.02), transparent); }
+
+ 
+
+  /* Mobile responsiveness */
+
+  @media (max-width: 1100px) {
+
+    .products { grid-template-columns: repeat(4, minmax(0,1fr)); }
+
+  }
+
+  @media (max-width: 900px) {
+
+    .hero-panels { grid-template-columns: 1fr; }
+
+    .media-grid { grid-template-columns: 1fr; }
+
+    .products { grid-template-columns: repeat(3, minmax(0,1fr)); }
+
+  }
+
+  @media (max-width: 680px) {
+
+    .products { grid-template-columns: repeat(2, minmax(0,1fr)); }
+
+    .title { font-size: 1.05rem; }
+
+    .header-inner { gap:.5rem; }
+
+    .panel { padding: 14px; }
+
+    .btn { min-height: 44px; }
+
+  }
+
+  @media (max-width: 420px) {
+
+    .products { grid-template-columns: 1fr; }
+
+    .header-inner { grid-template-columns: auto auto auto; }
+
+  }
+
+ 
+
+  /* Motion safety */
+
+  @media (prefers-reduced-motion: reduce) {
+
+    .spinner, .card:hover, .drawer, .toast { animation: none !important; transition: none !important; }
+
+  }
+
 </style>
+
 </head>
+
 <body>
 
-<!-- Loader -->
-<div class="loader" id="loader">
-  <div class="spinner"></div>
-  <div class="loader-text" id="loaderText"></div>
-</div>
+  <!-- Loading Screen -->
 
-<header>
-<a href="#top" class="home-btn"><img src="https://via.placeholder.com/32x32.png?text=Logo" alt="Home Logo"></a>
-<div class="brand">EVEX Shop</div>
-</header>
+  <div id="loader" aria-hidden="true">
 
-<!-- Hero Section -->
-<section id="home" class="active hero">
-<h1>Welcome to EVEX Shop</h1>
-<button class="btn" id="browseBtn">Browse Products</button>
-</section>
+    <div class="spinner" role="progressbar" aria-label="Loading"></div>
 
-<!-- Description Section -->
-<section id="description" class="description">
-<div class="panel">
-<h2>A deeply explained overview</h2>
-<p><strong>Architecture:</strong> Single HTML file with semantic structure, modern CSS gradients and shadows, and vanilla JS behavior.</p>
-<p><strong>Responsiveness:</strong> Layout scales from desktop to mobile with generous tap targets.</p>
-<p><strong>Cart system:</strong> Animated toasts, quantity adjust, removal, subtotal, localStorage persistence.</p>
-<p><strong>Media:</strong> Responsive 16:9 embeds for YouTube & videos/images.</p>
-<p><strong>Quality:</strong> ARIA labels, focus management, color contrast for professional UX.</p>
-</div>
-<div class="panel">
-<h2>How to adapt for production</h2>
-<p>Replace products with real items, swap placeholder images, hook checkout to your payment provider.</p>
-<p>Add meta tags, Open Graph, and analytics as needed.</p>
-<p>Keep alt text meaningful for accessibility.</p>
-</div>
-</section>
+  </div>
 
-<!-- Media -->
-<section class="media" id="media">
-<div class="panel">
-<h2>Feature Demos</h2>
-<div class="embed" aria-label="YouTube embed">
-<iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?rel=0&modestbranding=1" title="Product Demo" allowfullscreen style="width:100%;height:100%;aspect-ratio:16/9;border:0;border-radius:16px;"></iframe>
-</div>
-</div>
-<div class="panel">
-<h3>Short Teaser / Promo Image</h3>
-<div class="embed" style="width:100%;aspect-ratio:16/9;background:#141428;display:grid;place-items:center;border-radius:16px;">
-<img src="https://via.placeholder.com/800x450.png?text=Promo" alt="Promo" style="width:80%;border-radius:12px;">
-</div>
-</div>
-</section>
+ 
 
-<!-- Products Page -->
-<section id="productsPage" class="products-page" aria-labelledby="productsTitle">
-<h1 id="productsTitle">Products</h1>
-<h2>Fortnite</h2>
-<div class="product-grid">
-  <div class="product-card"><img src="https://via.placeholder.com/800x450?text=Fortnite+1" alt="Fortnite Product 1"></div>
-  <div class="product-card"><img src="https://via.placeholder.com/800x450?text=Fortnite+2" alt="Fortnite Product 2"></div>
-</div>
-</section>
+  <!-- Header / Nav -->
+
+  <header class="header">
+
+    <div class="header-inner">
+
+      <a class="home-btn" href='' aria-label="Home" title="Home">
+
+        <!-- House icon (no text) -->
+
+        <svg class="home-icon" viewBox="0 0 24 24" aria-hidden="true">
+
+          <path fill="currentColor" d="M12 3.2 3 10v9a1 1 0 0 0 1 1h5v-6h6v6h5a1 1 0 0 0 1-1v-9l-9-6.8Z"/>
+
+        </svg>
+
+      </a>
+
+      <div class="title" id="top">MoonWare.cc</div>
+
+      <button class="cart-btn" id="openCart" aria-haspopup="dialog" aria-controls="cartDrawer" aria-expanded="false">
+
+        <svg class="cart-icon" viewBox="0 0 24 24" aria-hidden="true">
+
+          <path fill="currentColor" d="M7 4h-2v2h2l3.6 7.59-1.35 2.45A2 2 0 0 0 11 19h9v-2h-9l1.1-2h7.45a2 2 0 0 0 1.79-1.11l3.58-7.16L22.16 4h-14Z"/>
+
+        </svg>
+
+        <span>Cart</span>
+
+        <span class="badge" id="cartCount">0</span>
+
+      </button>
+
+    </div>
+
+  </header>
+
+ 
+
+  <!-- Hero / Description -->
+
+  <section class="hero">
+
+    <div class="hero-panels">
+
+      <article class="panel" aria-labelledby="about-title">
+
+        <h2 id="about-title">A deeply explained, buyer‑focused experience</h2>
+
+        <p>
+
+          Welcome to <strong>MOONWARE</strong> — MOONWARE is a community of coders who aim to bring you the best quality products that gain you a tatical advantage in games.
+
+        </p>
+
+        <p>
+
+          MoonWare makes sure that our products are made with 100% effectivity to ensure our users are sastified with there purchases
+          MoonWare do not only offer cheats we offer spoofers to get you unbanned from your favourite games that you would like to play again
+          MoonWare has a very effective support system and will make sure to get any issue resolved in 48 hours or less 
+          
+
+        </p>
+
+        <ul class="bullets">
+
+          <li><strong>Performance:</strong> MoonWare’s products are especially coded to not bring the user any performance issues .</li>
+
+          <li><strong>reliability:</strong> we aim to have any cheat / spoofer updated 24 hours after its down</li>
+
+          <li><strong>fast support:</strong> MoonWare aim to have your issue resolved in 48 hours or less </li>
+
+          <li><strong>Media:</strong> MoonWare will always share clips of cheats to show users excatlly what they are buying</li>
+
+          <li><strong>avalibilty:</strong> MoonWare will always have stock of your desired item</li>
+
+        </ul>
+
+      </article>
+
+ 
+
+      <aside class="panel" aria-labelledby="media-title">
+
+        <h2 id="media-title">Product Highlights </h2>
+
+        <div class="media-grid">
+
+          <!-- YouTube slot -->
+
+          <div class="media" aria-label="YouTube showcase">
+
+            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ"
+
+                    title="Product Trailer"
+
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+
+                    allowfullscreen></iframe>
+
+          </div>
+
+          <!-- Native video / media slot -->
+
+          <div class="media" aria-label="Promotional video slot">
+
+            <video controls preload="metadata" poster="" aria-label="Promo video">
+
+              <source src="" type="video/mp4" />
+
+              <!-- Placeholder message if no source provided -->
+
+              Your browser does not support the video tag.
+
+            </video>
+
+          </div>
+
+        </div>
+
+        <p style=".6rem; color:var(--muted);">
+
+          
+
+        </p>
+
+      </aside>
+
+    </div>
+
+  </section>
+
+ 
+
+  <!-- Products -->
+
+  <h2 class="section-heading">Products</h2>
+
+  <section class="products" id="products" aria-label="Product grid">
+
+    <!-- Cards generated by JS (10 items) -->
+
+  </section>
+
+ 
+
+  <!-- Cart Drawer -->
+
+  <aside class="drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-label="Shopping cart">
+
+    <header>
+
+      <h3>Shopping Cart</h3>
+
+      <button class="cart-btn" id="closeCart" aria-label="Close cart">
+
+        ✕
+
+      </button>
+
+    </header>
+
+    <div class="list" id="cartList" aria-live="polite"></div>
+
+    <div class="totals">
+
+      <div style="display:flex; justify-content: space-between; align-items:center;">
+
+        <strong>Subtotal</strong>
+
+        <strong id="cartSubtotal">$0.00</strong>
+
+      </div>
+
+      <button class="checkout" id="checkoutBtn">Proceed to Checkout</button>
+
+      <small style="color:var(--muted);">Demo checkout — replace with your processor (Stripe, PayPal, etc.).</small>
+
+    </div>
+
+  </aside>
+
+ 
+
+  <!-- Toast notifications -->
+
+  <div class="toasts" id="toasts" aria-live="polite" aria-atomic="true"></div>
+
+ 
+
+  <!-- Footer -->
+
+  <footer>
+
+    © <span id="year"></span> MoonWare.cc , reliablity , performance , support .
+
+  </footer>
+
+ 
 
 <script>
-const loader = document.getElementById('loader');
-const loaderText = document.getElementById('loaderText');
-const home = document.getElementById('home');
-const description = document.getElementById('description');
-const media = document.getElementById('media');
-const productsPage = document.getElementById('productsPage');
-const browseBtn = document.getElementById('browseBtn');
 
-function fadeInElements(elements, delay=400){
-  return new Promise(resolve=>{
-    let i=0;
-    function next(){
-      if(i>=elements.length){resolve(); return;}
-      elements[i].style.opacity=1;
-      i++;
-      setTimeout(next, delay);
+  /* ---------------------------
+
+     Utilities
+
+  ----------------------------*/
+
+  const $ = (sel, ctx=document) => ctx.querySelector(sel);
+
+  const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
+
+  const money = v => new Intl.NumberFormat(undefined, {style:'currency', currency:'USD'}).format(v);
+
+ 
+
+  function toast(message, tone='good') {
+
+    const node = document.createElement('div');
+
+    node.className = `toast ${tone}`;
+
+    node.textContent = message;
+
+    $('#toasts').appendChild(node);
+
+    setTimeout(() => node.remove(), 3600);
+
+  }
+
+ 
+
+  function uid() { return Math.random().toString(36).slice(2,9); }
+
+ 
+
+  /* ---------------------------
+
+     Demo Data (10 Products)
+
+     All images are SVG placeholders to keep this file self-contained.
+
+  ----------------------------*/
+
+  const PRODUCTS = [
+
+    {id:'p1',  name:'Fn lite',           price:10,  desc:'', tag:'Best Seller'},
+
+    {id:'p2',  name:'fn full',           price:20,  desc:'', tag:'Bundle'},
+
+    {id:'p3',  name:'rust lite',         price:35,  desc:'', tag:'New'},
+
+    {id:'p4',  name:'rust full',         price:24,  desc:'', tag:'Audio'},
+
+    {id:'p5',  name:'R6 lite',           price:10,  desc:'', tag:'Design'},
+
+    {id:'p6',  name:'R6 Full',           price:16,  desc:'', tag:'Typography'},
+
+    {id:'p7',  name:'Apex Lite',         price:14,  desc:'', tag:'YouTube'},
+
+    {id:'p8',  name:'Apex Full',         price:22,  desc:'', tag:'Dev'},
+
+    {id:'p9',  name:'Temp Spoofer',      price:10,  desc:'', tag:'Visuals'},
+
+    {id:'p10', name:'Perm Spoofer',      price:15,   desc:'', tag:'Add‑On'}
+
+  ];
+
+ 
+
+  function productSVG(title) {
+
+    const grad1 = '#7b5cff', grad2 = '#18e0ff';
+
+    return `
+
+      <svg viewBox="0 0 240 180" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${title}">
+
+        <defs>
+
+          <linearGradient id="g" x1="0" x2="1">
+
+            <stop offset="0%" stop-color="${grad1}"/><stop offset="100%" stop-color="${grad2}"/>
+
+          </linearGradient>
+
+          <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+
+            <feGaussianBlur stdDeviation="6" result="b"/>
+
+            <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+
+          </filter>
+
+        </defs>
+
+        <rect width="240" height="180" fill="#0e0f1f"/>
+
+        <g filter="u rl(#glow)">
+
+          <rect x="22" y="20" rx="16" width="196" height="100" fill="u rl(#g)"/>
+
+          <circle cx="58" cy="140" r="18" fill="${grad1}"/>
+
+          <circle cx="98" cy="140" r="18" fill="${grad2}"/>
+
+          <circle cx="138" cy="140" r="18" fill="#ff5cc8"/>
+
+        </g>
+
+        <text x="120" y="78" text-anchor="middle" font-size="18" font-weight="800" fill="#fff">${title}</text>
+
+      </svg>
+
+    `;
+
+  }
+
+ 
+
+  /* ---------------------------
+
+     State (persisted)
+
+  ----------------------------*/
+
+  const CART_KEY = 'evex_cart_v1';
+
+  const cart = {
+
+    items: new Map(), // id -> {id, name, price, qty, tag}
+
+    load() {
+
+      try {
+
+        const raw = localStorage.getItem(CART_KEY);
+
+        if (raw) {
+
+          const obj = JSON.parse(raw);
+
+          for (const it of obj) this.items.set(it.id, it);
+
+        }
+
+      } catch (e) { console.warn('Cart load failed', e); }
+
+    },
+
+    save() {
+
+      try {
+
+        localStorage.setItem(CART_KEY, JSON.stringify([...this.items.values()]));
+
+      } catch (e) { console.warn('Cart save failed', e); }
+
+    },
+
+    add(product, qty=1) {
+
+      const existing = this.items.get(product.id);
+
+      if (existing) existing.qty += qty;
+
+      else this.items.set(product.id, {...product, qty});
+
+      this.save();
+
+      ui.renderCart();
+
+      ui.updateBadges();
+
+      toast(`Added ${product.name} to cart`);
+
+    },
+
+    remove(id) {
+
+      this.items.delete(id); this.save(); ui.renderCart(); ui.updateBadges(); toast('Removed from cart','warn');
+
+    },
+
+    setQty(id, qty) {
+
+      const it = this.items.get(id);
+
+      if (!it) return;
+
+      it.qty = Math.max(1, Math.min(99, qty|0));
+
+      this.save(); ui.renderCart(); ui.updateBadges();
+
+    },
+
+    count() {
+
+      let c = 0; for (const it of this.items.values()) c += it.qty; return c;
+
+    },
+
+    subtotal() {
+
+      let s = 0; for (const it of this.items.values()) s += it.price * it.qty; return s;
+
     }
-    next();
-  });
-}
 
-function fadeInProducts(elements, delay=400){
-  return new Promise(resolve=>{
-    let i=0;
-    function next(){
-      if(i>=elements.length){resolve(); return;}
-      elements[i].style.opacity=1;
-      i++;
-      setTimeout(next, delay);
+  };
+
+ 
+
+  /* ---------------------------
+
+     UI Rendering
+
+  ----------------------------*/
+
+  const ui = {
+
+    init() {
+
+      // Render products
+
+      const grid = $('#products');
+
+      PRODUCTS.forEach(p => {
+
+        const card = document.createElement('article');
+
+        card.className = 'card';
+
+        card.innerHTML = `
+
+          <div class="img">${productSVG(p.name)}</div>
+
+          <div class="body">
+
+            <div style="display:flex; justify-content:space-between; align-items:center; gap:8px;">
+
+              <h3>${p.name}</h3>
+
+              <span class="price">${money(p.price)}</span>
+
+            </div>
+
+            <p class="desc">${p.desc}</p>
+
+            <div style="display:flex; gap:6px; align-items:center;">
+
+              <span style="font-size:.78rem; padding:.2rem .5rem; border:1px solid rgba(255,255,255,.12); border-radius:999px; color:var(--muted);">${p.tag}</span>
+
+            </div>
+
+            <div class="actions">
+
+              <button class="btn" data-add="${p.id}">Add to Cart</button>
+
+              <button class="btn secondary" data-buy="${p.id}" title="Add & open cart">Buy Now</button>
+
+            </div>
+
+          </div>
+
+        `;
+
+        grid.appendChild(card);
+
+      });
+
+ 
+
+      // Product events
+
+      grid.addEventListener('click', (e) => {
+
+        const addId = e.target.closest('[data-add]')?.getAttribute('data-add');
+
+        const buyId = e.target.closest('[data-buy]')?.getAttribute('data-buy');
+
+        if (addId) {
+
+          const p = PRODUCTS.find(x => x.id === addId);
+
+          cart.add(p, 1);
+
+        }
+
+        if (buyId) {
+
+          const p = PRODUCTS.find(x => x.id === buyId);
+
+          cart.add(p, 1);
+
+          drawer.open();
+
+        }
+
+      });
+
+ 
+
+      // Cart controls
+
+      $('#openCart').addEventListener('click', drawer.open);
+
+      $('#closeCart').addEventListener('click', drawer.close);
+
+      $('#checkoutBtn').addEventListener('click', () => {
+
+        if (cart.items.size === 0) {
+
+          toast('Your cart is empty', 'warn');
+
+          return;
+
+        }
+
+        toast('Checkout is a demo. Connect your gateway.');
+
+      });
+
+ 
+
+      // Accessibility: close on Escape / outside click
+
+      document.addEventListener('keydown', (e) => {
+
+        if (e.key === 'Escape') drawer.close();
+
+      });
+
+      document.addEventListener('click', (e) => {
+
+        const d = $('#cartDrawer');
+
+        if (!d.classList.contains('open')) return;
+
+        if (!d.contains(e.target) && !$('#openCart').contains(e.target)) drawer.close();
+
+      });
+
+ 
+
+      ui.renderCart();
+
+      ui.updateBadges();
+
+      $('#year').textContent = new Date().getFullYear();
+
+    },
+
+ 
+
+    renderCart() {
+
+      const list = $('#cartList');
+
+      list.innerHTML = '';
+
+      if (cart.items.size === 0) {
+
+        list.innerHTML = `<div class="empty">Your cart is empty.</div>`;
+
+      } else {
+
+        for (const it of cart.items.values()) {
+
+          const row = document.createElement('div');
+
+          row.className = 'line';
+
+          row.innerHTML = `
+
+            <div class="thumb">${productSVG(it.name)}</div>
+
+            <div class="meta">
+
+              <div style="display:flex; justify-content:space-between; gap:10px;">
+
+                <strong>${it.name}</strong>
+
+                <strong>${money(it.price * it.qty)}</strong>
+
+              </div>
+
+              <div style="color:var(--muted); font-size:.9rem;">${money(it.price)} each • ${it.tag}</div>
+
+              <div style="display:flex; justify-content:space-between; align-items:center;">
+
+                <div class="qty" aria-label="Quantity controls">
+
+                  <button aria-label="Decrease quantity" data-dec="${it.id}">−</button>
+
+                  <span aria-live="polite" style="min-width:2ch; text-align:center;">${it.qty}</span>
+
+                  <button aria-label="Increase quantity" data-inc="${it.id}">+</button>
+
+                </div>
+
+                <button class="cart-btn" data-rem="${it.id}" aria-label="Remove item">Remove</button>
+
+              </div>
+
+            </div>
+
+          `;
+
+          list.appendChild(row);
+
+        }
+
+      }
+
+ 
+
+      // Bind quantity & remove
+
+      list.onclick = (e) => {
+
+        const dec = e.target.closest('[data-dec]')?.getAttribute('data-dec');
+
+        const inc = e.target.closest('[data-inc]')?.getAttribute('data-inc');
+
+        const rem = e.target.closest('[data-rem]')?.getAttribute('data-rem');
+
+        if (dec) { const it = cart.items.get(dec); cart.setQty(dec, (it?.qty||1) - 1); }
+
+        if (inc) { const it = cart.items.get(inc); cart.setQty(inc, (it?.qty||1) + 1); }
+
+        if (rem) { cart.remove(rem); }
+
+      };
+
+ 
+
+      $('#cartSubtotal').textContent = money(cart.subtotal());
+
+    },
+
+ 
+
+    updateBadges() {
+
+      $('#cartCount').textContent = cart.count();
+
+      $('#openCart').setAttribute('aria-expanded', String($('#cartDrawer').classList.contains('open')));
+
     }
-    next();
+
+  };
+
+ 
+
+  /* ---------------------------
+
+     Drawer controls
+
+  ----------------------------*/
+
+  const drawer = {
+
+    open() { $('#cartDrawer').classList.add('open'); $('#openCart').setAttribute('aria-expanded','true'); },
+
+    close() { $('#cartDrawer').classList.remove('open'); $('#openCart').setAttribute('aria-expanded','false'); }
+
+  };
+
+ 
+
+  /* ---------------------------
+
+     App init
+
+  ----------------------------*/
+
+  window.addEventListener('DOMContentLoaded', () => {
+
+    // Simulate short load for the splash
+
+    setTimeout(() => { $('#loader').classList.add('hidden'); }, 350);
+
+ 
+
+    cart.load();
+
+    ui.init();
+
   });
-}
 
-function showLoader(message='Loading...', duration=3000){
-  loaderText.textContent=message;
-  loader.classList.remove('hidden');
-  return new Promise(resolve=>{
-    setTimeout(()=>{
-      loader.classList.add('hidden');
-      resolve();
-    },duration);
-  });
-}
+ 
 
-async function sequenceHome(){
-  home.classList.add('active');
-  description.classList.add('active');
-  media.style.display='grid';
-  const panels = [...description.querySelectorAll('.panel'), ...media.querySelectorAll('.panel')];
-  await fadeInElements(panels,300);
-}
-
-browseBtn.addEventListener('click', async ()=>{
-  home.classList.remove('active');
-  description.classList.remove('active');
-  media.style.display='none';
-  await showLoader('Loading...',3000);
-  productsPage.classList.add('active');
-  const productCards = [...productsPage.querySelectorAll('.product-card')];
-  fadeInProducts(productCards,400);
-});
-
-// Start home fade-in sequence
-window.addEventListener('DOMContentLoaded',sequenceHome);
 </script>
 
 </body>
+
 </html>
