@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Moonware</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @keyframes fadeInOut {
+      0%, 100% { opacity: 0; }
+      50% { opacity: 1; }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes fadeOut {
+      from { opacity: 1; }
+      to { opacity: 0; }
+    }
+    .fade-in { animation: fadeIn 0.5s forwards; }
+    .fade-out { animation: fadeOut 0.5s forwards; }
+
+    .loading-screen h1 { animation: fadeInOut 2s ease-in-out infinite; }
+    .dropdown-animate {
+      transform-origin: top right;
+      transition: all 0.3s ease;
+      transform: scaleY(0);
+      opacity: 0;
+    }
+    .dropdown-animate.show { transform: scaleY(1); opacity: 1; }
+
+    .notification { animation: notifFade 2s forwards; }
+    @keyframes notifFade {
+      0% { opacity: 0; }
+      25% { opacity: 1; }
+      75% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    .btn-glow:hover { box-shadow: 0 0 10px rgba(255, 255, 255, 0.5); }
+  </style>
+</head>
+<body class="min-h-screen bg-black text-white">
+  <!-- Loading Screen -->
+  <div id="loading" class="fixed inset-0 flex items-center justify-center bg-black z-50">
+    <h1 class="text-5xl font-bold tracking-widest">Moonware</h1>
+  </div>
+
+  <!-- Main Content -->
+  <div id="main-content" class="opacity-0">
+    <!-- Header with Dropdown Menu and Cart -->
+    <header class="relative p-6 border-b border-gray-700 flex justify-center">
+      <div class="absolute right-6 top-6 flex space-x-4 items-center">
+        <!-- Main Menu -->
+        <div class="relative inline-block text-left">
+          <button id="menuButton" class="bg-gray-800 text-white px-4 py-2 border border-gray-600 rounded-md hover:bg-gray-700">Menu</button>
+          <div id="dropdownMenu" class="dropdown-animate absolute right-0 mt-2 w-40 bg-gray-900 text-white rounded-md shadow-lg hidden">
+            <a href="#" data-page="home" class="block px-4 py-2 hover:bg-gray-700">Home</a>
+            <a href="#" data-page="support" class="block px-4 py-2 hover:bg-gray-700">Support</a>
+          </div>
+        </div>
+
+        <!-- Cart -->
+        <div class="relative inline-block text-left">
+          <button id="cartButton" class="relative bg-gray-800 text-white px-3 py-2 border border-gray-600 rounded-md hover:bg-gray-700">
+            🛒
+            <span id="cartCount" class="absolute -top-2 -right-2 bg-red-600 text-white text-xs font-bold px-2 py-0.5 rounded-full">0</span>
+          </button>
+          <div id="cartMenu" class="dropdown-animate absolute right-0 mt-2 w-64 bg-gray-900 text-white rounded-md shadow-lg hidden p-4">
+            <div id="cartItems" class="space-y-2 text-sm">
+              <p class="text-gray-400">Your cart is empty.</p>
+            </div>
+            <div id="cartTotal" class="mt-4 border-t border-gray-700 pt-2 text-right font-bold">Total: $0</div>
+            <button class="mt-4 w-full bg-gray-800 text-white py-2 rounded-md hover:bg-gray-700 btn-glow">Buy Now</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <h1 class="text-4xl font-bold tracking-widest">Moonware</h1>
+        <p class="text-gray-400 mt-2">Products inspired by the night sky</p>
+      </div>
+    </header>
+
+    <!-- Pages -->
+    <section id="page-home" class="page-section">
+      <!-- Description -->
+      <div class="p-10 text-center max-w-3xl mx-auto">
+        <p class="text-lg text-gray-300">
+          Welcome to Moonware — a collection of handcrafted products inspired by the mystery and beauty of the night sky. Explore items designed to bring lunar elegance into your daily life.
+        </p>
+      </div>
+
+      <!-- Products Grid -->
+      <main class="p-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div class="bg-gray-900 text-white rounded-2xl shadow-xl overflow-hidden hover:scale-105 transform transition duration-300">
+          <img src="https://via.placeholder.com/200" alt="Lunar Lamp" class="w-full h-48 object-cover" />
+          <div class="p-4">
+            <h2 class="text-xl font-semibold text-white">Lunar Lamp</h2>
+            <p class="text-sm text-gray-300">A moon-shaped bedside lamp.</p>
+            <p class="mt-2 font-bold text-white">$49</p>
+            <button onclick="addToCart('Lunar Lamp', 49)" class="mt-4 w-full bg-gray-800 text-white py-2 rounded-xl hover:bg-gray-700 btn-glow">Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="bg-gray-900 text-white rounded-2xl shadow-xl overflow-hidden hover:scale-105 transform transition duration-300">
+          <img src="https://via.placeholder.com/200" alt="Moon Mug" class="w-full h-48 object-cover" />
+          <div class="p-4">
+            <h2 class="text-xl font-semibold text-white">Moon Mug</h2>
+            <p class="text-sm text-gray-300">Ceramic mug with moon phases design.</p>
+            <p class="mt-2 font-bold text-white">$19</p>
+            <button onclick="addToCart('Moon Mug', 19)" class="mt-4 w-full bg-gray-800 text-white py-2 rounded-xl hover:bg-gray-700 btn-glow">Add to Cart</button>
+          </div>
+        </div>
+
+        <div class="bg-gray-900 text-white rounded-2xl shadow-xl overflow-hidden hover:scale-105 transform transition duration-300">
+          <img src="https://via.placeholder.com/200" alt="Starry Blanket" class="w-full h-48 object-cover" />
+          <div class="p-4">
+            <h2 class="text-xl font-semibold text-white">Starry Blanket</h2>
+            <p class="text-sm text-gray-300">Soft blanket with constellations.</p>
+            <p class="mt-2 font-bold text-white">$89</p>
+            <button onclick="addToCart('Starry Blanket', 89)" class="mt-4 w-full bg-gray-800 text-white py-2 rounded-xl hover:bg-gray-700 btn-glow">Add to Cart</button>
+          </div>
+        </div>
+      </main>
+    </section>
+
+    <section id="page-support" class="page-section hidden opacity-0">
+      <div class="p-10 text-center max-w-3xl mx-auto">
+        <h2 class="text-2xl font-bold mb-4">Support</h2>
+        <p class="text-lg text-gray-300">Need help? Reach out to our support team at <a href="mailto:support@moonware.com" class="underline">support@moonware.com</a>.</p>
+      </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="p-6 border-t border-gray-700 text-center text-gray-400">
+      © <script>document.write(new Date().getFullYear())</script> Moonware. All rights reserved.
+    </footer>
+  </div>
+
+  <!-- Notification Container -->
+  <div id="notificationContainer" class="fixed bottom-6 left-6 space-y-2 z-50 flex flex-col-reverse"></div>
+
+  <script>
+    // Show loading screen for 5 seconds, then reveal main content
+    setTimeout(() => {
+      document.getElementById('loading').style.display = 'none';
+      const main = document.getElementById('main-content');
+      main.classList.add('fade-in');
+    }, 5000);
+
+    // Menu Dropdown toggle logic with animation
+    const menuButton = document.getElementById('menuButton');
+    const dropdownMenu = document.getElementById('dropdownMenu');
+    menuButton.addEventListener('click', () => {
+      dropdownMenu.classList.toggle('hidden');
+      dropdownMenu.classList.toggle('show');
+    });
+
+    // Page switching with fade effect
+    const links = dropdownMenu.querySelectorAll('a[data-page]');
+    let currentPage = document.getElementById('page-home');
+
+    links.forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const targetId = 'page-' + link.dataset.page;
+        const targetPage = document.getElementById(targetId);
+        if (targetPage && targetPage !== currentPage) {
+          currentPage.classList.remove('fade-in');
+          currentPage.classList.add('fade-out');
+          setTimeout(() => {
+            currentPage.classList.add('hidden');
+            currentPage.classList.remove('fade-out');
+            targetPage.classList.remove('hidden');
+            targetPage.classList.add('fade-in');
+            currentPage = targetPage;
+          }, 500);
+        }
+        dropdownMenu.classList.add('hidden');
+        dropdownMenu.classList.remove('show');
+      });
+    });
+
+    // Cart Dropdown toggle logic with animation
+    const cartButton = document.getElementById('cartButton');
+    const cartMenu = document.getElementById('cartMenu');
+    cartButton.addEventListener('click', () => {
+      cartMenu.classList.toggle('hidden');
+      cartMenu.classList.toggle('show');
+    });
+
+    // Close dropdowns when clicking outside
+    window.addEventListener('click', (e) => {
+      if (!menuButton.contains(e.target) && !dropdownMenu.contains(e.target)) {
+        dropdownMenu.classList.add('hidden');
+        dropdownMenu.classList.remove('show');
+      }
+      if (!cartButton.contains(e.target) && !cartMenu.contains(e.target)) {
+        cartMenu.classList.add('hidden');
+        cartMenu.classList.remove('show');
+      }
+    });
+
+    // Cart functionality
+    let cart = [];
+
+    function addToCart(product, price) {
+      const existing = cart.find(item => item.product === product);
+      if (existing) {
+        existing.quantity++;
+      } else {
+        cart.push({ product, price, quantity: 1 });
+      }
+      renderCart();
+      showNotification(product, price);
+    }
+
+    function renderCart() {
+      const cartItems = document.getElementById('cartItems');
+      const cartTotal = document.getElementById('cartTotal');
+      const cartCount = document.getElementById('cartCount');
+      cartItems.innerHTML = '';
+      let total = 0;
+      let itemCount = 0;
+
+      if (cart.length === 0) {
+        cartItems.innerHTML = '<p class="text-gray-400">Your cart is empty.</p>';
+        cartCount.textContent = '0';
+      } else {
+        cart.forEach(item => {
+          total += item.price * item.quantity;
+          itemCount += item.quantity;
+          const div = document.createElement('div');
+          div.className = 'flex justify-between';
+          div.innerHTML = `<span>${item.product} (x${item.quantity})</span><span>$${item.price * item.quantity}</span>`;
+          cartItems.appendChild(div);
+        });
+        cartCount.textContent = itemCount;
+      }
+
+      cartTotal.textContent = 'Total: $' + total;
+    }
+
+    // Notification system with stacking only if needed
+    function showNotification(product, price) {
+      const notificationContainer = document.getElementById('notificationContainer');
+      const existing = cart.find(item => item.product === product);
+
+      const notif = document.createElement('div');
+      notif.className = 'notification bg-gray-900 text-white px-4 py-2 rounded-md shadow-lg';
+      notif.innerHTML = `${product} added to cart. Quantity: ${existing.quantity}, Total: $${existing.price * existing.quantity}`;
+
+      notificationContainer.prepend(notif);
+
+      setTimeout(() => {
+        notif.remove();
+      }, 2000);
+    }
+  </script>
+</body>
+</html>
